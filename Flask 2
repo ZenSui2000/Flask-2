@@ -1,0 +1,76 @@
+Q1. Explain GET and POST methods ?
+
+
+A1. GET: The GET method is used to retrieve data from a server. When a user types a URL into a web browser, 
+     the browser sends a GET request to the server asking for the resource at that URL. The parameters for the 
+     request (such as search queries or page number) are included in the URL itself, separated by a question mark. 
+     Because the parameters are included in the URL, GET requests are visible to the user and can be bookmarked or 
+     shared. GET requests are also cached by browsers, which can speed up page load times for frequently visited pages
+
+     POST: The POST method is used to send data to a server. For example, when a user fills out a form on a website 
+     and clicks "Submit," the data from the form is sent to the server using a POST request. Unlike GET requests, 
+     POST requests do not include parameters in the URL. Instead, they include the parameters in the request body, 
+     which is not visible to the user. This makes POST requests more secure for transmitting sensitive information 
+     such as passwords or credit card numbers. Because POST requests are not cached, they are slower than GET requests 
+     for repeated requests of the same data.
+
+ Q2. Why is request used in Flask ?
+
+
+ A2. The request module in Flask is used to access incoming request data in Flask applications. When a client 
+     (such as a web browser) sends a request to a Flask web application, the application can use the request 
+     module to access information about the request, such as the HTTP method used (e.g. GET, POST, etc.), the 
+     data sent in the request body (if any), and any parameters or data sent as part of the request URL
+
+Q3. Why is redirect() used in Flask ?
+
+A3. The redirect() function in Flask is used to redirect the user to a different URL or route within a 
+     Flask application. When a Flask application receives a request, it can use the redirect() function 
+     to send the user to a different URL or route, which can be useful for a variety of reasons.
+
+
+Q4. What are templates in Flask? Why is the render_template() function used ?
+
+A4. Templates in Flask are files that contain HTML code with placeholders for dynamic content that will be  
+     filled in by the Flask application at runtime. Templates allow developers to separate the presentation 
+     logic from the business logic of the application, making it easier to manage and maintain the application
+     over time.
+
+     The render_template() function in Flask is used to render templates and return the result as a response to 
+     a client's request. The function takes the name of a template file as its argument and any additional data 
+     that needs to be passed to the template for rendering. The function then processes the template, filling in
+     the placeholders with the dynamic data and returning the resulting HTML code as a response to the client's 
+     request.
+
+Q5. Create a simple API. Use Postman to test it. Attach the screenshot of the output in the Jupyter Notebook ?
+
+A5. from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# Define the company and employees data
+company = {'name': 'Acme Inc.', 'employees': [
+    {'name': 'Sarfraj', 'title': 'Data Scientist'},
+    {'name': 'Abhishek ', 'title': 'Web Developer'},
+    {'name': 'Faizan ', 'title': 'Sales Manager'}
+]}
+
+# Define a route to get the company name
+@app.route('/company/name', methods=['GET'])
+def get_company_name():
+    return jsonify({'name': company['name']})
+
+# Define a route to get the employees
+@app.route('/company/employees', methods=['GET'])
+def get_employees():
+    return jsonify({'employees': company['employees']})
+
+# Define a route to add an employee
+@app.route('/company/employees', methods=['POST'])
+def add_employee():
+    employee = request.get_json()
+    company['employees'].append(employee)
+    return jsonify({'employees': company['employees']})
+
+if __name__ == '__main__':
+    app.run(debug=True)
